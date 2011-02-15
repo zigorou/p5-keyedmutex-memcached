@@ -2,7 +2,6 @@ use inc::Module::Install;
 name 'KeyedMutex-Memcached';
 all_from 'lib/KeyedMutex/Memcached.pm';
 
-requires 'Class::Accessor::Lite';
 requires 'Scope::Guard', 0.20;
 requires 'Time::HiRes';
 
