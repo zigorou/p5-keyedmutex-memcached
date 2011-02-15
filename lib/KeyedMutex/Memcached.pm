@@ -2,10 +2,7 @@ package KeyedMutex::Memcached;
 
 use strict;
 use warnings;
-use Class::Accessor::Lite (
-    new => 0,
-    rw  => [qw/key locked interval trial timeout prefix cache/],
-);
+use Carp;
 use Scope::Guard qw(scope_guard);
 use Time::HiRes qw(usleep);
 
@@ -20,25 +17,32 @@ sub new {
         timeout  => 30,
         prefix   => 'km',
         locked   => 0,
+        cache    => undef,
         %$args,
     };
+
+    croak('cache value should be object and appeared add and delete methods.')
+      unless ( $args->{cache}
+        && UNIVERSAL::can( $args->{cache}, 'add' )
+        && UNIVERSAL::can( $args->{cache}, 'delete' ) );
+
     bless $args => $class;
 }
 
 sub lock {
     my ( $self, $key, $use_raii ) = @_;
 
-    $key = $self->prefix . ':' . $key if ( $self->prefix );
-    $self->key($key);
-    $self->locked(0);
+    $key = $self->{prefix} . ':' . $key if ( $self->{prefix} );
+    $self->{key}    = $key;
+    $self->{locked} = 0;
 
     my $i        = 0;
     my $rv       = 0;
-    my $interval = $self->interval * 1000;
-    while ( $self->trial == 0 || ++$i <= $self->trial ) {
-        $rv = $self->cache->add( $key, 1, $self->timeout ) ? 1 : 0;
+    my $interval = $self->{interval} * 1000;
+    while ( $self->{trial} == 0 || ++$i <= $self->{trial} ) {
+        $rv = $self->{cache}->add( $key, 1, $self->{timeout} ) ? 1 : 0;
         if ($rv) {
-            $self->locked(1);
+            $self->{locked} = 1;
             last;
         }
         usleep($interval);
@@ -48,7 +52,9 @@ sub lock {
 }
 
 sub release {
-    $_[0]->cache->delete( $_[0]->key );
+    my $self = shift;
+    $self->{cache}->delete( $self->{key} );
+    $self->{locked} = 0;
     1;
 }
 
@@ -57,7 +63,7 @@ __END__
 
 =head1 NAME
 
-KeyedMutex::Memcached -
+KeyedMutex::Memcached - An interprocess keyed mutex using memcached
 
 =head1 SYNOPSIS
 
@@ -67,13 +73,55 @@ KeyedMutex::Memcached -
   my $cache = Cache::Memcached::Fast->new( ... );
   my $mutex = KeyedMutex::Memcached->new( cache => $cache );
 
-  if ( my $lock = $mutex->lock( $key, 1 ) ) {
-    ### do task
+  until ( my $value = $cache->get($key) ) {
+    if ( my $lock = $mutex->lock( $key, 1 ) ) {
+      #locked read from DB
+      $value = get_from_db($key);
+      $cache->set($key, $value);
+      last;
+    }
   }
 
 =head1 DESCRIPTION
 
-KeyedMutex::Memcached is
+KeyedMutex::Memcached is an interprocess keyed mutex using memcached.
+This module is inspired by L<KeyedMutex>.
+
+=head1 METHODS
+
+=head2 new( %args )
+
+Following parameters are recognized.
+
+=over
+
+=item cache
+
+B<Required>. L<Cache::Memcached::Fast> object or similar interface object.
+
+=item interval
+
+Optional. The seconds for busy loop interval. Defaults to 0.01 seconds.
+
+=item trial
+
+Optional. When the value is being set zero, lock() method will be waiting until lock becomes released.
+When the value is being set positive integer value, lock() method will be stopped on reached trial count.
+Defaults to 0.
+
+=item timeout
+
+Optional. The seconds until lock becomes released. Defaults to 30 seconds.
+
+=item interval
+
+=back
+
+=head2 lock($key, [ $use_raii ])
+
+=head2 locked
+
+=head2 release
 
 =head1 AUTHOR
 
