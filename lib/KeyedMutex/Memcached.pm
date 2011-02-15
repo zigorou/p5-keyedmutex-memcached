@@ -16,9 +16,9 @@ sub new {
         trial    => 0,
         timeout  => 30,
         prefix   => 'km',
-        locked   => 0,
         cache    => undef,
         %$args,
+        locked => 0,
     };
 
     croak('cache value should be object and appeared add and delete methods.')
@@ -113,15 +113,24 @@ Defaults to 0.
 
 Optional. The seconds until lock becomes released. Defaults to 30 seconds.
 
-=item interval
+=item prefix
+
+Optional. Prefix of key to store memcached. The real key is prefix + ':' + key. Defaults to 'km'.
 
 =back
 
 =head2 lock($key, [ $use_raii ])
 
+Get lock by each key. When getting lock successfully, returns 1, on failed returns 0.
+If use_raii is being set true, return L<Scope::Guard> object as RAII.
+
 =head2 locked
 
+Which is the object has locked.
+
 =head2 release
+
+Release lock.
 
 =head1 AUTHOR
 
