@@ -4,9 +4,9 @@ use strict;
 use warnings;
 use Carp;
 use Scope::Guard qw(scope_guard);
-use Time::HiRes qw(usleep);
+use Time::HiRes ();
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
     my $class = shift;
@@ -36,16 +36,16 @@ sub lock {
     $self->{key}    = $key;
     $self->{locked} = 0;
 
-    my $i        = 0;
-    my $rv       = 0;
-    my $interval = $self->{interval} * 1000;
+    my $i  = 0;
+    my $rv = 0;
+
     while ( $self->{trial} == 0 || ++$i <= $self->{trial} ) {
         $rv = $self->{cache}->add( $key, 1, $self->{timeout} ) ? 1 : 0;
         if ($rv) {
             $self->{locked} = 1;
             last;
         }
-        usleep($interval);
+        Time::HiRes::sleep( $self->{interval} * rand(1) );
     }
 
     return $rv ? ( $use_raii ? scope_guard { $self->release } : 1 ) : 0;

@@ -8,3 +8,6 @@ __DATA__
 Toru Yamaguchi
 zigorou@cpan.org
 KeyedMutex::Memcached
+mutex
+memcached
+RAII

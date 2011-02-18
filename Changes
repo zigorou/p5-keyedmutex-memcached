@@ -1,4 +1,9 @@
 Revision history for Perl extension KeyedMutex::Memcached
 
+0.02    Fri Feb 18 16:28:28 2011
+        - use Time::HiRes::sleep instread of usleep
+        - wait interval is rand value. So It is considered collision on retry 
+          like CSMA/CD (thanks by Kazuho Oku) 
+
 0.01    Tue Feb 15 20:44:37 2011
         - original version
