@@ -1,5 +1,7 @@
 Revision history for Perl extension KeyedMutex::Memcached
 
+{{$NEXT}}
+
 0.02    Fri Feb 18 16:28:28 2011
         - use Time::HiRes::sleep instread of usleep
         - wait interval is rand value. So It is considered collision on retry 
