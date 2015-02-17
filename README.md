@@ -50,7 +50,7 @@ Following parameters are recognized.
 
 - prefix
 
-    Optional. Prefix of key to store memcached. The real key is prefix + ':' + key. Defaults to 'km'.
+    Optional. Prefix of key to store memcached. The real key is prefix + ':' + key. Defaults to `'km'`.
 
 ## lock($key, \[ $use\_raii \])
 

@@ -115,7 +115,7 @@ Optional. The seconds until lock becomes released. Defaults to 30 seconds.
 
 =item prefix
 
-Optional. Prefix of key to store memcached. The real key is prefix + ':' + key. Defaults to 'km'.
+Optional. Prefix of key to store memcached. The real key is prefix + ':' + key. Defaults to C<'km'>.
 
 =back
 
