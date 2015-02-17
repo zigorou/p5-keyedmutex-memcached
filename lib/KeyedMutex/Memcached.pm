@@ -6,7 +6,7 @@ use Carp;
 use Scope::Guard qw(scope_guard);
 use Time::HiRes ();
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub new {
     my $class = shift;

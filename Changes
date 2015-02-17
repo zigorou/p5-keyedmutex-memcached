@@ -2,6 +2,11 @@ Revision history for Perl extension KeyedMutex::Memcached
 
 {{$NEXT}}
 
+0.03 2015-02-17T11:58:10Z
+
+        - Fixed test dependency.
+        - Switch to M::B::Tiny
+
 0.02    Fri Feb 18 16:28:28 2011
         - use Time::HiRes::sleep instread of usleep
         - wait interval is rand value. So It is considered collision on retry 
