@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "keyedmutex-memcached",
+   "name" : "KeyedMutex-Memcached",
    "no_index" : {
       "directory" : [
          "t",
@@ -33,7 +33,7 @@
       },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "Module::Build::Tiny" : "0.035"
          }
       },
       "develop" : {
@@ -65,13 +65,13 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/karupanerura/p5-keyedmutex-memcached/issues"
+         "web" : "https://github.com/zigorou/p5-keyedmutex-memcached/issues"
       },
-      "homepage" : "https://github.com/karupanerura/p5-keyedmutex-memcached",
+      "homepage" : "https://github.com/zigorou/p5-keyedmutex-memcached",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/karupanerura/p5-keyedmutex-memcached.git",
-         "web" : "https://github.com/karupanerura/p5-keyedmutex-memcached"
+         "url" : "git://github.com/zigorou/p5-keyedmutex-memcached.git",
+         "web" : "https://github.com/zigorou/p5-keyedmutex-memcached"
       }
    },
    "version" : "0.02",
