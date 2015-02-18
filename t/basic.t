@@ -25,7 +25,7 @@ sub create_memcached_client {
         +{ servers => [ 'localhost:' . $port ] } );
 }
 
-do {
+{
     my $port  = empty_port;
     my $proc  = run_memcached_server($port);
     my $cache = create_memcached_client($port);
@@ -38,6 +38,17 @@ do {
         is( $mutex->release,       1,     'release lock' );
         is( $cache->get('km:foo'), undef, 'not exists lock data' );
         done_testing;
+    };
+
+    subtest 'use raii' => sub {
+        my $mutex =
+          KeyedMutex::Memcached->new( cache => $cache, timeout => 5, );
+        {
+            if ( my $lock = $mutex->lock( 'baz', 1 ) ) {
+                is( $cache->get('km:baz'), 1, 'exists lock data' );
+            }
+        };
+        is( $cache->get('km:baz'), undef, 'not exists lock data' );
     };
 
     subtest 'lock timeout' => sub {
