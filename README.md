@@ -11,12 +11,14 @@ KeyedMutex::Memcached - An interprocess keyed mutex using memcached
     my $mutex = KeyedMutex::Memcached->new( cache => $cache );
 
     until ( my $value = $cache->get($key) ) {
-      if ( my $lock = $mutex->lock( $key, 1 ) ) {
-        #locked read from DB
-        $value = get_from_db($key);
-        $cache->set($key, $value);
-        last;
-      }
+      {
+        if ( my $lock = $mutex->lock( $key, 1 ) ) {
+          #locked read from DB
+          $value = get_from_db($key);
+          $cache->set($key, $value);
+          last;
+        }
+      };
     }
 
 # DESCRIPTION
