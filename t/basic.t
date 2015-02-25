@@ -94,7 +94,7 @@ sub create_memcached_client {
 
         is( $mutex1->lock('foo'), 1, 'mutex1 got lock' );
         is( $mutex2->lock('foo'), 0, 'mutex2 could not get lock' );
-        sleep 5;
+        sleep 6;
         is( $mutex2->lock('foo'), 1, 'mutex2 got lock' );
         is( $mutex2->release,     1, 'mutex2 released lock' );
         done_testing;
