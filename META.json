@@ -71,7 +71,7 @@
          "web" : "https://github.com/zigorou/p5-keyedmutex-memcached"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_contributors" : [
       "karupanerura <karupa@cpan.org>"
    ]

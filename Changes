@@ -2,6 +2,11 @@ Revision history for Perl extension KeyedMutex::Memcached
 
 {{$NEXT}}
 
+0.05 2015-02-25T15:35:21Z
+
+        - Fixed dependencies.
+        - Fixed boundary testing.
+
 0.04 2015-02-18T00:41:38Z
 
         - Merged diff from `ZIGOROU/KeyedMutex-Memcached-0.03`.
