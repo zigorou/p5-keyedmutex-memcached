@@ -56,7 +56,7 @@ sub create_memcached_client {
           KeyedMutex::Memcached->new( cache => $cache, timeout => 5, );
         is( $mutex->lock('foo'),   1, 'got lock' );
         is( $cache->get('km:foo'), 1, 'exists lock data' );
-        sleep 5;
+        sleep 6;
         is( $cache->get('km:foo'), undef, 'not exists lock data' );
         done_testing;
     };
