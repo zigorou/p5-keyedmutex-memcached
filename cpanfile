@@ -1,8 +1,9 @@
-requires 'Scope::Guard', '0.2';
+requires 'Scope::Guard';
 requires 'Time::HiRes';
 
-on build => sub {
-    requires 'ExtUtils::MakeMaker', '6.36';
+on configure => sub {
+    requires 'Module::Build::Tiny', '0.035';
+    requires 'perl', '5.008_001';
 };
 
 on test => sub {
@@ -12,4 +13,8 @@ on test => sub {
     requires 'Test::More';
     requires 'Test::Skip::UnlessExistsExecutable';
     requires 'Test::TCP';
+};
+
+on develop => sub {
+    requires 'Test::Perl::Critic';
 };
